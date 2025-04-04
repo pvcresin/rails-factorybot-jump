@@ -74,13 +74,16 @@ class FactoryLinkProvider implements vscode.DocumentLinkProvider {
 
     // Regex pattern to match factory calls: create(:factory_name), create :factory_name, build(:factory_name), build :factory_name
     const factoryRegex =
-      /(?:create|build)\s*(?:\(\s*)?:([a-zA-Z0-9_]+)(?:\s*,\s*[^)]*)?/g;
+      /(?:create|build)\s*(?:\(\s*)?(:([a-zA-Z0-9_]+))(?:\s*,\s*[^)]*)?/g;
     let match;
 
     while ((match = factoryRegex.exec(text)) !== null) {
-      const factoryName = match[1];
-      const startPos = document.positionAt(match.index);
-      const endPos = document.positionAt(match.index + match[0].length);
+      const factoryName = match[2];
+      // Calculate range for just the :factory_name part
+      const factoryNameStart = match.index + match[0].indexOf(match[1]);
+      const factoryNameEnd = factoryNameStart + match[1].length;
+      const startPos = document.positionAt(factoryNameStart);
+      const endPos = document.positionAt(factoryNameEnd);
       const range = new vscode.Range(startPos, endPos);
 
       // Get factory file and line number from cache
