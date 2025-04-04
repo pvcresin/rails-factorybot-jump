@@ -9,7 +9,7 @@ class FactoryLinkProvider implements vscode.DocumentLinkProvider {
 
     // create(:factory_name), create :factory_name, build(:factory_name), build :factory_name パターンを検索する正規表現
     const factoryRegex =
-      /(?:create|build)\s*(?:\(\s*)?:([a-zA-Z0-9_]+)\s*(?:\))?/g;
+      /(?:create|build)\s*(?:\(\s*)?:([a-zA-Z0-9_]+)(?:\s*,\s*|\s*\))?/g;
     let match;
 
     while ((match = factoryRegex.exec(text)) !== null) {
@@ -25,7 +25,7 @@ class FactoryLinkProvider implements vscode.DocumentLinkProvider {
           range,
           vscode.Uri.file(factoryFile.fsPath)
         );
-        link.tooltip = `Jump to factory definition: ${factoryName}`;
+        link.tooltip = `Hold Cmd (Mac) or Ctrl (Windows) and click to jump to factory definition: ${factoryName}`;
         links.push(link);
       }
     }
