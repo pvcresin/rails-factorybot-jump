@@ -2,14 +2,35 @@
   "name": "rails-factorybot-jump",
   "displayName": "Rails FactoryBot Jump",
   "description": "Jump to FactoryBot factory definition from Rails test files",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "icon": "images/icon.png",
   "publisher": "hir4ken",
   "engines": {
     "vscode": "^1.85.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hiraishikentaro/rails-factorybot-jumpnav"
+  },
+  "keywords": [
+    "rails",
+    "ruby",
+    "factorybot",
+    "factory",
+    "test",
+    "testing",
+    "rspec",
+    "navigation",
+    "go to definition",
+    "ruby on rails",
+    "rails testing",
+    "test automation"
+  ],
   "categories": [
-    "Other"
+    "Other",
+    "Programming Languages",
+    "Testing",
+    "Snippets"
   ],
   "activationEvents": [
     "onLanguage:ruby"
