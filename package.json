@@ -3,6 +3,8 @@
   "displayName": "Rails FactoryBot Jump",
   "description": "Jump to FactoryBot factory definition from Rails test files",
   "version": "1.0.0",
+  "icon": "images/icon.png",
+  "publisher": "hir4ken",
   "engines": {
     "vscode": "^1.85.0"
   },

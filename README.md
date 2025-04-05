@@ -4,63 +4,44 @@ A VSCode extension that enables quick navigation from Rails test files to Factor
 
 ## Features
 
-- Jump from FactoryBot calls in Rails test files to their corresponding factory definitions
-- Supports the following patterns:
-  - `create(:factory_name)`
-  - `create :factory_name`
-  - `build(:factory_name)`
-  - `build :factory_name`
-
-## Installation
-
-1. Open VSCode
-2. Open the Extensions tab (Ctrl+Shift+X / Cmd+Shift+X)
-3. Search for "Rails FactoryBot Jump"
-4. Click Install
-
-Alternatively, you can install directly from the [Marketplace](https://marketplace.visualstudio.com/items?itemName=your-name.rails-factorybot-jump).
+- Automatically detects FactoryBot factory calls (`create(:factory_name)`, `build(:factory_name)`) in test files
+- Provides clickable links to jump to the corresponding factory definition
+- Supports both `spec/factories` and `test/factories` directories
+- Caches factory definitions for faster navigation
+- Automatically updates cache when factory files are modified
 
 ## Usage
 
-1. Open a Rails test file
-2. Hover over a FactoryBot call (e.g., `create(:user)`)
-3. A tooltip will show the operation instructions
-4. Hold Cmd (Mac) or Ctrl (Windows) and click
-5. Jump to the corresponding factory definition file
+1. Open a Rails test file containing FactoryBot factory calls
+2. Hover over a factory call (e.g., `create(:user)`)
+3. Hold Cmd (Mac) or Ctrl (Windows) and click the link to jump to the factory definition
 
-## Supported Patterns
+## Requirements
 
-```ruby
-# All of the following patterns are supported
-create(:user)
-create :user
-build(:user)
-build :user
-```
+- VSCode 1.60.0 or higher
+- Ruby on Rails project with FactoryBot
 
-## For Developers
+## Known Issues
 
-### Development Environment Setup
+- Currently only supports factory calls with simple arguments
+- May not work correctly with complex factory inheritance or traits
 
-1. Clone the repository
+## Development
 
-```bash
-git clone https://github.com/your-username/rails-factorybot-jump.git
-```
+### Prerequisites
 
-2. Install dependencies
+- Node.js
+- npm or yarn
+- VSCode Extension Development Tools
 
-```bash
-cd rails-factorybot-jump
-npm install
-```
+### Setup
 
-3. Run in development mode
-
-```bash
-npm run watch
-```
-
+1. Clone this repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Open the project in VSCode
 4. Press F5 to start debugging
 
 ## License
