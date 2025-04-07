@@ -158,12 +158,17 @@ suite("Extension Test Suite", () => {
         Buffer.from("factory :post do\n  title { 'Test' }\nend")
       );
 
-      // Force reinitialization to update cache
+      // Create a new instance to force reinitialization
+      factoryLinkProvider = new FactoryLinkProvider();
       await factoryLinkProvider.initializeFactoryFiles();
 
       // Verify updated factory
       const postFactory = await factoryLinkProvider.findFactoryFile("post");
       assert.ok(postFactory, "Should find updated post factory file");
+
+      // Verify old factory is no longer in cache
+      const oldUserFactory = await factoryLinkProvider.findFactoryFile("user");
+      assert.ok(!oldUserFactory, "Should not find old user factory file");
     } finally {
       // Clean up
       await vscode.workspace.fs.delete(factoryFile);
