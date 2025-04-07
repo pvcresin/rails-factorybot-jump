@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 
-class FactoryLinkProvider implements vscode.DocumentLinkProvider {
+export class FactoryLinkProvider implements vscode.DocumentLinkProvider {
   private factoryCache: Map<string, { uri: vscode.Uri; lineNumber: number }> =
     new Map();
   private factoryFiles: vscode.Uri[] = [];
