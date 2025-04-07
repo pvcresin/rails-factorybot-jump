@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-04-07
+
+### Added
+
+- Configurable factory paths through VSCode settings
+- Test workflow for continuous integration
+
+### Fixed
+
+- Cross-platform path handling improvements
+- Updated test cases to work with existing FactoryLinkProvider implementation
+
+### Changed
+
+- Updated README with new features and configuration options
+
 ## [1.0.0] - 2024-04-05
 
 ### Added
