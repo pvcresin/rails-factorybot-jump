@@ -48,7 +48,22 @@
         "scheme": "file",
         "language": "ruby"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Rails FactoryBot Jump",
+      "properties": {
+        "rails-factorybot-jump.factoryPaths": {
+          "type": "array",
+          "default": [
+            "spec/factories/**/*.rb"
+          ],
+          "description": "Paths to search for factory files. Supports glob patterns.",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
