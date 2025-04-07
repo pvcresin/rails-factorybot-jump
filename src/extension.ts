@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import * as path from "path";
 
 export class FactoryLinkProvider implements vscode.DocumentLinkProvider {
   private factoryCache: Map<string, { uri: vscode.Uri; lineNumber: number }> =
@@ -23,13 +24,13 @@ export class FactoryLinkProvider implements vscode.DocumentLinkProvider {
 
     // Get factory paths from configuration
     const config = vscode.workspace.getConfiguration("rails-factorybot-jump");
-    const factoryPaths = config.get<string[]>("factoryPaths", [
-      "spec/factories/**/*.rb",
-    ]);
+    const defaultPath = path.join("spec", "factories", "**", "*.rb");
+    const factoryPaths = config.get<string[]>("factoryPaths", [defaultPath]);
 
     // Factory file search patterns
     const patterns = factoryPaths.map(
-      (path) => new vscode.RelativePattern(workspaceFolders[0], path)
+      (pathPattern) =>
+        new vscode.RelativePattern(workspaceFolders[0], pathPattern)
     );
 
     // Search for files matching all patterns

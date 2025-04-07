@@ -203,7 +203,7 @@ suite("Extension Test Suite", () => {
       value: () => ({
         get: (key: string) => {
           if (key === "factoryPaths") {
-            return ["spec/factories/**/*.rb"];
+            return [path.join("spec", "factories", "**", "*.rb")];
           }
           return undefined;
         },
@@ -236,7 +236,7 @@ suite("Extension Test Suite", () => {
       value: () => ({
         get: (key: string) => {
           if (key === "factoryPaths") {
-            return ["custom/factories/**/*.rb"];
+            return [path.join("custom", "factories", "**", "*.rb")];
           }
           return undefined;
         },
@@ -269,7 +269,10 @@ suite("Extension Test Suite", () => {
       value: () => ({
         get: (key: string) => {
           if (key === "factoryPaths") {
-            return ["spec/factories/**/*.rb", "custom/factories/**/*.rb"];
+            return [
+              path.join("spec", "factories", "**", "*.rb"),
+              path.join("custom", "factories", "**", "*.rb"),
+            ];
           }
           return undefined;
         },
