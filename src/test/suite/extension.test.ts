@@ -203,7 +203,7 @@ suite("Extension Test Suite", () => {
       value: () => ({
         get: (key: string) => {
           if (key === "factoryPaths") {
-            return [path.join("spec", "factories", "**", "*.rb")];
+            return [path.posix.join("spec", "factories", "**", "*.rb")];
           }
           return undefined;
         },
@@ -236,7 +236,7 @@ suite("Extension Test Suite", () => {
       value: () => ({
         get: (key: string) => {
           if (key === "factoryPaths") {
-            return [path.join("custom", "factories", "**", "*.rb")];
+            return [path.posix.join("custom", "factories", "**", "*.rb")];
           }
           return undefined;
         },
@@ -270,8 +270,8 @@ suite("Extension Test Suite", () => {
         get: (key: string) => {
           if (key === "factoryPaths") {
             return [
-              path.join("spec", "factories", "**", "*.rb"),
-              path.join("custom", "factories", "**", "*.rb"),
+              path.posix.join("spec", "factories", "**", "*.rb"),
+              path.posix.join("custom", "factories", "**", "*.rb"),
             ];
           }
           return undefined;
