@@ -1,0 +1,38 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.0.0] - 2024-04-05
+
+### Added
+
+- Initial release of Rails FactoryBot Jump VSCode extension
+- FactoryBot factory call detection in test files
+- Clickable links for jumping to factory definitions
+- Support for both `spec/factories` and `test/factories` directories
+- Factory definition caching system
+- Automatic cache updates when factory files are modified
+- Basic command support (Cmd/Ctrl + click) for navigation
+
+### Changed
+
+- N/A
+
+### Deprecated
+
+- N/A
+
+### Removed
+
+- N/A
+
+### Fixed
+
+- N/A
+
+### Security
+
+- N/A
