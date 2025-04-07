@@ -21,11 +21,16 @@ export class FactoryLinkProvider implements vscode.DocumentLinkProvider {
       return;
     }
 
+    // Get factory paths from configuration
+    const config = vscode.workspace.getConfiguration("rails-factorybot-jump");
+    const factoryPaths = config.get<string[]>("factoryPaths", [
+      "spec/factories/**/*.rb",
+    ]);
+
     // Factory file search patterns
-    const patterns = [
-      new vscode.RelativePattern(workspaceFolders[0], "spec/factories/**/*.rb"),
-      new vscode.RelativePattern(workspaceFolders[0], "test/factories/**/*.rb"),
-    ];
+    const patterns = factoryPaths.map(
+      (path) => new vscode.RelativePattern(workspaceFolders[0], path)
+    );
 
     // Search for files matching all patterns
     for (const pattern of patterns) {

@@ -9,12 +9,31 @@ A VSCode extension that enables quick navigation from Rails test files to Factor
 - Supports both `spec/factories` and `test/factories` directories
 - Caches factory definitions for faster navigation
 - Automatically updates cache when factory files are modified
+- Configurable factory file search paths
 
 ## Usage
 
 1. Open a Rails test file containing FactoryBot factory calls
 2. Hover over a factory call (e.g., `create(:user)`)
 3. Hold Cmd (Mac) or Ctrl (Windows) and click the link to jump to the factory definition
+
+## Configuration
+
+You can configure the paths where the extension searches for factory files by adding the following to your VSCode settings (settings.json):
+
+```json
+{
+  "rails-factorybot-jump.factoryPaths": [
+    "spec/factories/**/*.rb",
+    "test/factories/**/*.rb",
+    "custom/path/to/factories/**/*.rb"
+  ]
+}
+```
+
+- The default path is `["spec/factories/**/*.rb"]`
+- You can specify multiple paths using glob patterns
+- Changes to the configuration will automatically update the factory search paths
 
 ## Requirements
 

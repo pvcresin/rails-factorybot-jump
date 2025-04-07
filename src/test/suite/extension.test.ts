@@ -9,6 +9,10 @@ import * as fs from "fs";
 declare module "vscode" {
   interface Workspace {
     workspaceFolders: vscode.WorkspaceFolder[] | undefined;
+    getConfiguration(
+      section?: string,
+      scope?: vscode.ConfigurationScope
+    ): vscode.WorkspaceConfiguration;
   }
 }
 
@@ -16,6 +20,10 @@ suite("Extension Test Suite", () => {
   let factoryLinkProvider: FactoryLinkProvider;
   let testWorkspacePath: string;
   let testWorkspaceFolder: vscode.WorkspaceFolder;
+  let originalGetConfiguration: (
+    section?: string,
+    scope?: vscode.ConfigurationScope
+  ) => vscode.WorkspaceConfiguration;
 
   suiteSetup(() => {
     // Create a temporary directory for testing
@@ -25,7 +33,13 @@ suite("Extension Test Suite", () => {
 
     // Create necessary directories
     const factoriesDir = path.join(testWorkspacePath, "spec", "factories");
+    const customFactoriesDir = path.join(
+      testWorkspacePath,
+      "custom",
+      "factories"
+    );
     fs.mkdirSync(factoriesDir, { recursive: true });
+    fs.mkdirSync(customFactoriesDir, { recursive: true });
 
     // Create a workspace folder for testing
     testWorkspaceFolder = {
@@ -39,6 +53,9 @@ suite("Extension Test Suite", () => {
       value: [testWorkspaceFolder],
       configurable: true,
     });
+
+    // Store original getConfiguration
+    originalGetConfiguration = vscode.workspace.getConfiguration;
   });
 
   suiteTeardown(() => {
@@ -47,6 +64,11 @@ suite("Extension Test Suite", () => {
     // Reset workspace folders
     Object.defineProperty(vscode.workspace, "workspaceFolders", {
       value: undefined,
+      configurable: true,
+    });
+    // Restore original getConfiguration
+    Object.defineProperty(vscode.workspace, "getConfiguration", {
+      value: originalGetConfiguration,
       configurable: true,
     });
   });
@@ -172,6 +194,118 @@ suite("Extension Test Suite", () => {
     } finally {
       // Clean up
       await vscode.workspace.fs.delete(factoryFile);
+    }
+  });
+
+  test("FactoryLinkProvider should use default factory paths", async () => {
+    // Mock getConfiguration to return default paths
+    Object.defineProperty(vscode.workspace, "getConfiguration", {
+      value: () => ({
+        get: (key: string) => {
+          if (key === "factoryPaths") {
+            return ["spec/factories/**/*.rb"];
+          }
+          return undefined;
+        },
+      }),
+      configurable: true,
+    });
+
+    const factoryContent = "factory :user do\n  name { 'John' }\nend";
+    const factoryFile = vscode.Uri.file(
+      path.join(testWorkspacePath, "spec", "factories", "test_factories.rb")
+    );
+
+    await vscode.workspace.fs.writeFile(
+      factoryFile,
+      Buffer.from(factoryContent)
+    );
+
+    try {
+      await factoryLinkProvider.initializeFactoryFiles();
+      const userFactory = await factoryLinkProvider.findFactoryFile("user");
+      assert.ok(userFactory, "Should find user factory file in default path");
+    } finally {
+      await vscode.workspace.fs.delete(factoryFile);
+    }
+  });
+
+  test("FactoryLinkProvider should use custom factory path", async () => {
+    // Mock getConfiguration to return custom path
+    Object.defineProperty(vscode.workspace, "getConfiguration", {
+      value: () => ({
+        get: (key: string) => {
+          if (key === "factoryPaths") {
+            return ["custom/factories/**/*.rb"];
+          }
+          return undefined;
+        },
+      }),
+      configurable: true,
+    });
+
+    const factoryContent = "factory :user do\n  name { 'John' }\nend";
+    const factoryFile = vscode.Uri.file(
+      path.join(testWorkspacePath, "custom", "factories", "test_factories.rb")
+    );
+
+    await vscode.workspace.fs.writeFile(
+      factoryFile,
+      Buffer.from(factoryContent)
+    );
+
+    try {
+      await factoryLinkProvider.initializeFactoryFiles();
+      const userFactory = await factoryLinkProvider.findFactoryFile("user");
+      assert.ok(userFactory, "Should find user factory file in custom path");
+    } finally {
+      await vscode.workspace.fs.delete(factoryFile);
+    }
+  });
+
+  test("FactoryLinkProvider should use multiple factory paths", async () => {
+    // Mock getConfiguration to return multiple paths
+    Object.defineProperty(vscode.workspace, "getConfiguration", {
+      value: () => ({
+        get: (key: string) => {
+          if (key === "factoryPaths") {
+            return ["spec/factories/**/*.rb", "custom/factories/**/*.rb"];
+          }
+          return undefined;
+        },
+      }),
+      configurable: true,
+    });
+
+    const factoryContent1 = "factory :user do\n  name { 'John' }\nend";
+    const factoryContent2 = "factory :post do\n  title { 'Test' }\nend";
+
+    const factoryFile1 = vscode.Uri.file(
+      path.join(testWorkspacePath, "spec", "factories", "test_factories.rb")
+    );
+    const factoryFile2 = vscode.Uri.file(
+      path.join(testWorkspacePath, "custom", "factories", "test_factories.rb")
+    );
+
+    await vscode.workspace.fs.writeFile(
+      factoryFile1,
+      Buffer.from(factoryContent1)
+    );
+    await vscode.workspace.fs.writeFile(
+      factoryFile2,
+      Buffer.from(factoryContent2)
+    );
+
+    try {
+      await factoryLinkProvider.initializeFactoryFiles();
+      const userFactory = await factoryLinkProvider.findFactoryFile("user");
+      const postFactory = await factoryLinkProvider.findFactoryFile("post");
+
+      assert.ok(userFactory, "Should find user factory file in first path");
+      assert.ok(postFactory, "Should find post factory file in second path");
+    } finally {
+      await vscode.workspace.fs.delete(factoryFile1);
+      await vscode.workspace.fs.delete(factoryFile2);
     }
   });
 });
