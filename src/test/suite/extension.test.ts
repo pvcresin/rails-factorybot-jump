@@ -136,12 +136,7 @@ suite("Extension Test Suite", () => {
     `;
 
     const factoryFile = vscode.Uri.file(
-      path.posix.join(
-        testWorkspacePath,
-        "spec",
-        "factories",
-        "test_factories.rb"
-      )
+      path.join(testWorkspacePath, "spec", "factories", "test_factories.rb")
     );
 
     await vscode.workspace.fs.writeFile(
@@ -164,12 +159,7 @@ suite("Extension Test Suite", () => {
 
   test("FactoryLinkProvider should handle file system changes", async () => {
     const factoryFile = vscode.Uri.file(
-      path.posix.join(
-        testWorkspacePath,
-        "spec",
-        "factories",
-        "test_factories.rb"
-      )
+      path.join(testWorkspacePath, "spec", "factories", "test_factories.rb")
     );
 
     // Create initial factory file
@@ -223,12 +213,7 @@ suite("Extension Test Suite", () => {
 
     const factoryContent = "factory :user do\n  name { 'John' }\nend";
     const factoryFile = vscode.Uri.file(
-      path.posix.join(
-        testWorkspacePath,
-        "spec",
-        "factories",
-        "test_factories.rb"
-      )
+      path.join(testWorkspacePath, "spec", "factories", "test_factories.rb")
     );
 
     await vscode.workspace.fs.writeFile(
@@ -261,12 +246,7 @@ suite("Extension Test Suite", () => {
 
     const factoryContent = "factory :user do\n  name { 'John' }\nend";
     const factoryFile = vscode.Uri.file(
-      path.posix.join(
-        testWorkspacePath,
-        "custom",
-        "factories",
-        "test_factories.rb"
-      )
+      path.join(testWorkspacePath, "custom", "factories", "test_factories.rb")
     );
 
     await vscode.workspace.fs.writeFile(
@@ -304,20 +284,10 @@ suite("Extension Test Suite", () => {
     const factoryContent2 = "factory :post do\n  title { 'Test' }\nend";
 
     const factoryFile1 = vscode.Uri.file(
-      path.posix.join(
-        testWorkspacePath,
-        "spec",
-        "factories",
-        "test_factories.rb"
-      )
+      path.join(testWorkspacePath, "spec", "factories", "test_factories.rb")
     );
     const factoryFile2 = vscode.Uri.file(
-      path.posix.join(
-        testWorkspacePath,
-        "custom",
-        "factories",
-        "test_factories.rb"
-      )
+      path.join(testWorkspacePath, "custom", "factories", "test_factories.rb")
     );
 
     await vscode.workspace.fs.writeFile(
